@@ -1,0 +1,59 @@
+$cyan1: #1c4f4d;
+$cyan2: #297672;
+$cyan3: #359d98;
+$cyan4: #43c1bc;
+$cyan5: #69cfca;
+
+body {
+  background: $cyan5;
+}
+
+h1 {
+  color: $cyan2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.session-container {
+  display: flex;
+  width: 100%;
+  height: 100px;
+  justify-content: space-around;
+}
+
+.session-item {
+  width: 15%;
+}
+
+.timer-circle {
+  display: block;
+  width: 60vmin;
+  height: 60vmin;
+  margin: auto;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    margin: auto;
+    width: 80%;
+    height: 50px;
+    margin-top: 20px;
+    
+    font-size: 1.4em;
+    transition: .2s all ease-in-out;
+    color: $cyan2;
+    border: 3px solid $cyan1;
+    border-radius: 5px;
+    background: transparent;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+}
