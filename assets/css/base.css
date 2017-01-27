@@ -1,8 +1,8 @@
 body {
-  background: #69cfca; }
+  background: #FD393E; }
 
 h1 {
-  color: #297672; }
+  color: #990004; }
 
 .text-center {
   text-align: center; }
@@ -14,7 +14,8 @@ h1 {
   justify-content: space-around; }
 
 .session-item {
-  width: 15%; }
+  width: 15%;
+  fill: #009B95; }
 
 .timer-circle {
   display: block;
@@ -32,12 +33,16 @@ h1 {
     margin-top: 20px;
     font-size: 1.4em;
     transition: .2s all ease-in-out;
-    color: #297672;
-    border: 3px solid #1c4f4d;
+    color: #629100;
+    border: 3px solid #629100;
     border-radius: 5px;
-    background: transparent; }
-  .actions button:hover {
+    background: #B4F036; }
+  .actions button:hover:enabled {
     transform: scale(1.1);
     cursor: pointer; }
+  .actions button:disabled {
+    border-color: #808080;
+    color: #808080;
+    background: #D9D9D9; }
 
 /*# sourceMappingURL=base.css.map */

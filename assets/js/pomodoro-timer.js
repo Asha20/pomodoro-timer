@@ -1,6 +1,12 @@
 let pomodoroTimer = (function(global) {
+    let colors = {
+        blue0: "#009B95",
+        blue3: "#007873",
+        red3: "#C30005"
+    };
+
     let settings = {
-        workTime: 5
+        workTime: 1500
     };
 
     let elements = {
@@ -12,8 +18,8 @@ let pomodoroTimer = (function(global) {
 
             update: function() {
                 for (let i = 0; i < this.items.length; i++) {
-                    let colored = i < this.finished;
-                    this.items[i].style.fill = colored ? "red" : "black";
+                    this.items[i].style.fill =
+                        (i < this.finished) ? colors.blue3 : colors.blue0;
                 }
             },
 
@@ -41,24 +47,27 @@ let pomodoroTimer = (function(global) {
                 let center = this.size / 2;
 
                 this.ctx.clearRect(0, 0, this.size, this.size);
-                this.ctx.fillStyle = "green";
+                this.ctx.fillStyle = colors.blue0;
                 this.ctx.beginPath();
                 this.ctx.arc(center, center, center, 0, total);
                 this.ctx.fill();
 
                 let lineSize = this.size * 0.2;
                 this.ctx.beginPath();
-                this.ctx.strokeStyle = "red";
+                this.ctx.strokeStyle = colors.blue3;
                 this.ctx.lineWidth = lineSize;
                 this.ctx.arc(center, center, center - lineSize / 2,
                              0, part * time);
                 this.ctx.stroke();
 
                 let timeLeft = maxTime - time;
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
                 this.ctx.font = `${lineSize}px Arial`;
                 this.ctx.textAlign = "center";
                 this.ctx.fillStyle = "white";
-                this.ctx.fillText(timeLeft, center, center + lineSize / 3);
+                this.ctx.fillText(`${minutes}:${seconds}`,
+                                  center, center + lineSize / 3);
             }
         }
     };
@@ -71,35 +80,62 @@ let pomodoroTimer = (function(global) {
         let btnStop = document.querySelector(".btn-stop");
         let btnPause = document.querySelector(".btn-pause");
 
-        let current;
-        let timerID = -1;
+        let startTime;
+        let endTime;
+        let pauseTime;
+        let timerID;
 
-        function startTimer() {
-            let seconds = parseInt((Date.now() - current) / 1000);
-            let timeLeft = settings.workTime - seconds;
+        function startTimer(endTime) {
+            let secondsLeft = parseInt((endTime - Date.now()) / 1000);
+            let secondsPassed = settings.workTime - secondsLeft;
 
-            if (timeLeft >= 0) {
-                elements.canvas.drawTimer(seconds, settings.workTime);
+            if (Date.now() < endTime) {
+                elements.canvas.drawTimer(secondsPassed, settings.workTime);
             }
             else {
                 elements.workCounter.endSession();
                 stopTimer();
+                startTime = undefined;
+                pauseTime = undefined;
+                elements.canvas.drawTimer(0, settings.workTime);
             }
         }
 
         function stopTimer() {
+            btnStart.disabled = false;
+            btnStop.disabled = true;
+            btnPause.disabled = true;
+
             clearInterval(timerID);
             timerID = -1;
         }
 
         btnStart.addEventListener("click", function(event) {
-            if (timerID === -1) {
-                current = Date.now();
-                timerID = setInterval(startTimer, 1000);
+            let timeLeft;
+            if (startTime === undefined) {
+                startTime = Date.now();
+                timeLeft = settings.workTime * 1000;
             }
+            endTime = startTime + (pauseTime || timeLeft);
+            timerID = setInterval(startTimer.bind(null, endTime), 1000);
+
+            btnStart.disabled = true;
+            btnStop.disabled = false;
+            btnPause.disabled = false;
         });
 
-        btnStop.addEventListener("click", stopTimer);
+        btnStop.addEventListener("click", function(event) {
+            stopTimer();
+            startTime = undefined;
+            pauseTime = undefined;
+            elements.canvas.drawTimer(0, settings.workTime);
+        });
+
+        btnPause.addEventListener("click", function(event) {
+            pauseTime = endTime - Date.now();
+            startTime = undefined;
+            stopTimer();
+        });
 
         return {
             start: btnStart,
