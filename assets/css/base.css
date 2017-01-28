@@ -14,8 +14,7 @@ h1 {
   justify-content: space-around; }
 
 .session-item {
-  width: 15%;
-  fill: #009B95; }
+  width: 20%; }
 
 .timer-circle {
   display: block;
