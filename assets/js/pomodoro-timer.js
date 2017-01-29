@@ -6,6 +6,8 @@ let pomodoroTimer = (function(global) {
     };
 
     let settings = {
+        muted: false,
+
         time: {
             work: 15,
             shortBreak: 5,
@@ -18,6 +20,8 @@ let pomodoroTimer = (function(global) {
     let elements = {
         workCounter: {
             init: function() {
+                this.alarm = new Audio("./assets/sound/alarm.mp3")
+                this.currentSession = document.querySelector(".current-session");
                 this.finished = 0;
                 this.container = document.querySelector(".session-container");
                 this.template = document.querySelector("template.tomato");
@@ -49,9 +53,6 @@ let pomodoroTimer = (function(global) {
             },
 
             endSession: function() {
-                // if (this.finished < 4) {
-                //     this.finished += 1;
-                // }
                 if (currentTimer === settings.time.work) {
                     if (this.finished < 4) {
                         this.finished += 1;
@@ -59,15 +60,21 @@ let pomodoroTimer = (function(global) {
 
                     if (this.finished === 4) {
                         currentTimer = settings.time.longBreak;
+                        this.currentSession.innerHTML = "Long Break";
                     }
                     else {
                         currentTimer = settings.time.shortBreak;
+                        this.currentSession.innerHTML = "Short Break";
                     }
                 }
                 else {
                     currentTimer = settings.time.work;
+                    this.currentSession.innerHTML = "Work";
                 }
 
+                if (!settings.muted) {
+                    this.alarm.play();
+                }
                 this.update();
             }
         },
@@ -103,13 +110,13 @@ let pomodoroTimer = (function(global) {
                 this.ctx.stroke();
 
                 const timeLeft = maxTime - time;
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
                 const pad = num => ("00" + num).slice(-2);
+                const minutes = pad(Math.floor(timeLeft / 60));
+                const seconds = pad(timeLeft % 60);
                 this.ctx.font = `${lineSize}px Arial`;
                 this.ctx.textAlign = "center";
                 this.ctx.fillStyle = "white";
-                this.ctx.fillText(`${pad(minutes)}:${pad(seconds)}`,
+                this.ctx.fillText(`${minutes}:${seconds}`,
                                   center, center + lineSize / 3);
             },
 
@@ -126,6 +133,7 @@ let pomodoroTimer = (function(global) {
         const btnStart = document.querySelector(".btn-start");
         const btnStop = document.querySelector(".btn-stop");
         const btnPause = document.querySelector(".btn-pause");
+        const btnMute = document.querySelector(".btn-mute");
 
         let startTime, endTime, pauseTime;
         let timerID;
@@ -180,6 +188,17 @@ let pomodoroTimer = (function(global) {
             pauseTime = endTime - Date.now();
             startTime = undefined;
             stopTimer();
+        });
+
+        btnMute.addEventListener("click", function(event) {
+            if (settings.muted) {
+                settings.muted = false;
+                btnMute.innerHTML = "Mute";
+            }
+            else {
+                settings.muted = true;
+                btnMute.innerHTML = "Unmute";
+            }
         });
 
         return {

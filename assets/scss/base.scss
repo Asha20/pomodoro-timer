@@ -30,6 +30,16 @@ h1 {
   margin: auto;
 }
 
+.current-session {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 10px;
+
+  color: $color-red-4;
+  font-size: 2em;
+}
+ 
 .actions {
   display: flex;
   flex-direction: column;
