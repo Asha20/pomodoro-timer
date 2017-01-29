@@ -9,9 +9,9 @@ let pomodoroTimer = (function(global) {
         muted: false,
 
         time: {
-            work: 15,
-            shortBreak: 5,
-            longBreak: 10
+            work: 1500,
+            shortBreak: 300,
+            longBreak: 900
         }
     };
 
