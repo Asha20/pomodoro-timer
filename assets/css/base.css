@@ -8,9 +8,12 @@ h1 {
   text-align: center; }
 
 .session-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 100%;
   height: 100px;
+  -ms-flex-pack: distribute;
   justify-content: space-around; }
 
 .session-item {
@@ -31,7 +34,12 @@ h1 {
   font-size: 2em; }
 
 .actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column; }
   .actions button {
     margin: auto;
@@ -39,12 +47,14 @@ h1 {
     height: 50px;
     margin-top: 20px;
     font-size: 1.4em;
+    -webkit-transition: .2s all ease-in-out;
     transition: .2s all ease-in-out;
     color: #629100;
     border: 3px solid #629100;
     border-radius: 5px;
     background: #B4F036; }
   .actions button:hover:enabled {
+    -webkit-transform: scale(1.1);
     transform: scale(1.1);
     cursor: pointer; }
   .actions button:disabled {
