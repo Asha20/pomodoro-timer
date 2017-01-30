@@ -30,11 +30,16 @@ header h1 {
   }
 }
 
-.timer-circle {
+.timer-wrapper {
   display: block;
   width: 60vmin;
   height: 60vmin;
-  margin: auto;
+}
+
+.timer-circle {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .current-session {
@@ -49,13 +54,8 @@ header h1 {
 }
  
 .actions {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 
   button {
     margin: auto;
@@ -82,5 +82,42 @@ header h1 {
     border-color: $color-gray-0;
     color: $color-gray-0;
     background: $color-gray-1;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .timer-display {
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .timer-wrapper {
+      order: 1;
+      width: 40%;
+      height: 40%;
+      margin-left: auto;
+      margin-right: 30px;
+    }
+
+    .actions {
+      margin-left: 30px;
+      width: 70vmin;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .actions button {
+      width: 100%;
+      margin: 0px;
+    }
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .timer-wrapper {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 }
